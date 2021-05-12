@@ -1,0 +1,49 @@
+const parser = new DOMParser();
+
+const xmlString = `
+<list>
+  <student>
+    <name lang="en">Ivan Ivanov</name>
+    <age>35</age>
+    <prof>teacher</prof>
+  </student>
+  <student_2>
+    <name lang="ru">Петр Петров</name>
+    <age>58</age>
+    <prof>driver</prof>
+  </student_2>
+</list>
+`;
+
+const xmlDOM = parser.parseFromString(xmlString,"text/xml");
+
+const listNode = xmlDOM.querySelector("list");
+const studentNode = listNode.querySelector("student");
+const nameNode = studentNode.querySelector("name");
+const ageNode = studentNode.querySelector("age");
+const profNode = studentNode.querySelector("prof");
+
+const langAttr = nameNode.getAttribute("lang");
+
+const student_2Node = listNode.querySelector("student_2");
+const name_2Node = student_2Node.querySelector("name");
+const age_2Node = student_2Node.querySelector("age");
+const prof_2Node = student_2Node.querySelector("prof");
+
+const lang_2Attr = name_2Node.getAttribute("lang");
+
+const student = {
+    name: nameNode.textContent, 
+    age: Number(ageNode.textContent), 
+    prof: profNode.textContent, 
+    lang: langAttr 
+  };
+
+const student_2 = {
+    name: name_2Node.textContent, 
+    age: Number(age_2Node.textContent), 
+    prof: prof_2Node.textContent, 
+    lang: lang_2Attr 
+};
+
+console.log(student,student_2);

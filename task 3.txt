@@ -1,0 +1,56 @@
+//HTML
+
+<body>
+    <select class="year">
+      <option>2017</option>
+      <option>2018</option>
+      <option>2019</option>
+    </select>
+    <button class="btn j-btn-request">Загрузить отчет</button>
+    <p></p>
+    <div class="result j-result"></div>
+</body>
+
+
+//JS
+
+function useRequest(url, callback) {
+  let xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+
+  xhr.onload = function() {
+    if (xhr.status != 200) { console.log("Статус: ", xhr.status); }
+    else {  
+      const result = JSON.parse(xhr.response);
+      if (callback) {
+        callback(result);
+      }
+    }
+  };
+
+  xhr.onerror = function() {
+    console.log("Ошибка! Статус: ", xhr.status)
+  };
+
+  xhr.send();
+};
+
+const resultNode = document.querySelector(".j-result");
+const btnNode = document.querySelector(".j-btn-request");
+const year = document.querySelector(".year");
+let yearNum = 0
+
+function displayResult(apiData) {
+  console.log()
+  resultNode.innerHTML = `1. КВ: ${apiData[`${yearNum}`].sales.q1} | 2. КВ: ${apiData[`${yearNum}`].sales.q2} | 3. КВ: ${apiData[`${yearNum}`].sales.q3} | 4 КВ: ${apiData[`${yearNum}`].sales.q4}`;
+};
+  
+btnNode.addEventListener("click", () => {
+  useRequest("https://my.api.mockaroo.com/revenue_2017-2019.json?key=fd36b440", displayResult);
+});
+
+year.addEventListener("click", () => {
+  if (year.value == 2017) { yearNum = 0 }
+  if (year.value == 2018) { yearNum = 1 }
+  if (year.value == 2019) { yearNum = 2 }
+});
